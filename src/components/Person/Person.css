@@ -1,0 +1,20 @@
+.Person {
+    display: flex;
+    /* margin-top: 1rem; */
+    flex-direction: row;
+    padding: 1rem;
+  }
+  
+  .Person .person-image {
+    width: 30%;
+    height: 30%;
+    border-radius: 10px;
+  }
+  
+  .Person .list-group-item {
+    padding: .25rem;
+  }
+  
+  .Person .list-group-item .term{
+    margin-right: .5rem;
+  }
