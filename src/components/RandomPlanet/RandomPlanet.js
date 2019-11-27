@@ -2,48 +2,48 @@ import React, { Component } from 'react';
 
 import './RandomPlanet.css';
 import SwapiService from '../../services/SwapiService';
+import Spinner from '../../UI/Spinner/Spinner';
+import PlanetView from './PlanetView';
+import ErrorIndicator from '../../UI/ErrorIndicator/ErrorIndicator'
 
 class RandomPlanet extends Component {
 
     swapi = new SwapiService();
 
     state = {
-        planet: {}
+        planet: {},
+        loading: true,
+        error: false
     };
+
+    onError = (error) => {
+        this.setState({ error: true, loading: false })
+    }
 
     componentDidMount() {
         let id = Math.floor(Math.random() * 20 + 2)
         this.swapi.getPlanet(id)
             .then(planet => {
-                this.setState({ planet })
+                this.setState({ planet, loading: false })
             })
+            .catch(this.onError)
     }
 
     render() {
+
+        const errorMsg = this.state.error ? <ErrorIndicator /> : null;
+        const spinner = this.state.loading ? <Spinner /> : null;
+        const planet = !this.state.loading && !this.state.error ? <PlanetView planet={this.state.planet} /> : null;
+
         return(
             <div className="RandomPlanet jumbotron rounded">
-                <img className="planet-image" alt="planet"
-                    src={ `https://starwars-visualguide.com/assets/img/planets/${ this.state.planet.id }.jpg` } />
-                <div>
-                    <h4>{ this.state.planet.name }</h4>
-                    <ul className="list-group list-group-flush">
-                        <li className="list-group-item">
-                            <span className="term">Population</span>
-                            <span>{ this.state.planet.population }</span>
-                        </li>
-                        <li className="list-group-item">
-                            <span className="term">Rotation Period</span>
-                            <span>{ this.state.planet.rotation }</span>
-                        </li>
-                        <li className="list-group-item">
-                            <span className="term">Diameter</span>
-                            <span>{ this.state.planet.diameter }</span>
-                        </li>
-                    </ul>
-                </div>
-          </div>
+                { spinner }
+                { planet }
+                { errorMsg }
+            </div>
             )
     }
 };
 
 export default RandomPlanet;
+
