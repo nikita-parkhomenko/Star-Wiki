@@ -2,6 +2,6 @@
     cursor: pointer;
   }
   
-  .ItemsList .list-group-item:hover {
+.ItemsList .list-group-item:hover {
     background-color: #444;
   }

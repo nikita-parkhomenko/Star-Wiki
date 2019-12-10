@@ -19,14 +19,19 @@ class RandomPlanet extends Component {
     onError = (error) => {
         this.setState({ error: true, loading: false })
     }
-
-    componentDidMount() {
+    updatePlanet = () => {
+        // let id = 9000;
         let id = Math.floor(Math.random() * 20 + 2)
         this.swapi.getPlanet(id)
             .then(planet => {
                 this.setState({ planet, loading: false })
             })
             .catch(this.onError)
+    }
+
+    componentDidMount() {
+        this.updatePlanet();
+        setInterval(this.updatePlanet, 5000);
     }
 
     render() {
